@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
+
 @Data
 @AllArgsConstructor
 public class EmailOciDTO {
@@ -29,6 +30,11 @@ public class EmailOciDTO {
     @NotBlank(message = "Preencha o conteudo do Email campo obrigatório")
     @Length(max = 250, message = "O Conteúdo do email deve conter no máximo 250 caracteres")
     private String body;
+
+
+    public EmailOciDTO() {
+
+    }
 
 
 }

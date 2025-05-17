@@ -34,4 +34,9 @@ public class EmailAwsDTO {
     private String content;
 
 
-   }
+    public EmailAwsDTO() {
+
+    }
+
+
+}
