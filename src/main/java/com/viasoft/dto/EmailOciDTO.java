@@ -7,7 +7,7 @@ import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
 @Data
-@AllArgsConstructor
+
 public class EmailOciDTO {
 
     @NotBlank(message = "Preencha Email do destinatário campo obrigatório ")
@@ -27,14 +27,19 @@ public class EmailOciDTO {
     @Length(max = 100, message = "O Assunto do e-mail deve conter no máximo 100 caracteres")
     private String subject;
 
-    @NotBlank(message = "Preencha o conteudo do Email campo obrigatório")
+    @NotBlank(message = "Preencha o conteúdo do Email campo obrigatório")
     @Length(max = 250, message = "O Conteúdo do email deve conter no máximo 250 caracteres")
     private String body;
-
 
     public EmailOciDTO() {
 
     }
 
-
+    public EmailOciDTO(String recipientEmail, String recipientName, String senderEmail, String subject, String body) {
+        this.recipientEmail = recipientEmail;
+        this.recipientName = recipientName;
+        this.senderEmail = senderEmail;
+        this.subject = subject;
+        this.body = body;
+    }
 }

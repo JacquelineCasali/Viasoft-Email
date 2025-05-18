@@ -1,11 +1,7 @@
 package com.viasoft.service;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.viasoft.dto.EmailAwsDTO;
 import com.viasoft.dto.EmailDTO;
-import com.viasoft.dto.EmailOciDTO;
-import com.viasoft.enums.ProvedorIntegracao;
+import com.viasoft.enums.Provedor;
 import com.viasoft.exception.EmailProcessingException;
-import com.viasoft.util.JsonUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,41 +10,28 @@ import org.springframework.beans.factory.annotation.Value;
 @RequiredArgsConstructor
 public class EmailService {
 
+    //chamando o servidor
     @Value("${mail.integracao}")
     private String integracao;
 
-    // converter dados entre sistemas exemplo de json para xml
-    private final ObjectMapper objectMapper;
-
+      private final EmailAwsService emailAwsService;
+    private final EmailOciService emailOciService;
     public void processarEmail(@Valid EmailDTO email) {
         try {
-            ProvedorIntegracao provedor = ProvedorIntegracao.from(integracao);
+            // Determina o provedor de e-mail com base na configuração
+            Provedor provedor = Provedor.from(integracao);
+
+            Emails servicoEnvio;
 
             switch (provedor) {
-                case AWS -> {
-                    EmailAwsDTO awsDTO = new EmailAwsDTO(
-                            email.getEmailDestinatario(),
-                            email.getNomeDestinatario(),
-                            email.getEmailRemetente(),
-                            email.getAssunto(),
-                            email.getConteudo()
-                    );
-                    System.out.println(JsonUtil.serialize(awsDTO));
-                }
-                case OCI -> {
-                    EmailOciDTO ociDTO = new EmailOciDTO(
-                            email.getEmailDestinatario(),
-                            email.getNomeDestinatario(),
-                            email.getEmailRemetente(),
-                            email.getAssunto(),
-                            email.getConteudo()
-                    );
-                    System.out.println(JsonUtil.serialize(ociDTO));
-                }
+                case AWS -> servicoEnvio = emailAwsService;
+                case OCI -> servicoEnvio = emailOciService;
+                default -> throw new EmailProcessingException("Provedor inválido: " + provedor);
             }
-        } catch (IllegalArgumentException e) {
-            throw new EmailProcessingException("Valor inválido para mail.integracao: " + integracao);
+          servicoEnvio.enviarEmail(email);
+
         } catch (Exception e) {
-            throw new EmailProcessingException("Erro ao processar email: " + e.getMessage());
+            throw new EmailProcessingException("Mensagem: " + e.getMessage());
         }
-    }}
+    }
+    }
