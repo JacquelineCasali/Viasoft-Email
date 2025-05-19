@@ -3,6 +3,7 @@ package com.viasoft.service;
 import com.viasoft.dto.EmailDTO;
 import com.viasoft.dto.EmailOciDTO;
 
+import com.viasoft.util.JsonUtil;
 import com.viasoft.util.ValidacaoUtil;
 
 import jakarta.validation.ConstraintViolationException;
@@ -43,5 +44,6 @@ public class EmailOciService implements Emails {
 
 
         System.out.println("Enviando e-mail via OCI");
-        System.out.println(ociDTO);
+
+        System.out.println(JsonUtil.serialize(ociDTO));
     }}
