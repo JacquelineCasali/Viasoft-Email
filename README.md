@@ -5,6 +5,10 @@ Criar um endpoint REST que receba dados de e-mail e, conforme configuração em 
 ## 🎥Vídeo do projeto 
 
 
+https://github.com/user-attachments/assets/6cd38994-5737-49eb-8d38-a4213f0e223c
+
+
+
 
 ## 🚀 Tecnologias Utilizadas
 
